@@ -1,0 +1,7 @@
+.game>.word {
+    display: flex;
+    justify-content: center;
+    width: calc(100% - 0.4em);
+    margin: 50px 0 50px 0;
+    text-align: right;
+}

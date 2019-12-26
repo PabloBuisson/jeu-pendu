@@ -1,24 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Key from './Key.js'
+import Word from './Word.js'
+
+const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+"M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+const word = "ELEPHANT"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="game">
+      <div className="word">
+        {word.split("").map( (letter, index) => (
+          <Word letter={letter} key={index} feedback="hidden" />
+        ))}
+      </div>
+      {alphabet.map( (letter) => (
+          <Key letter={letter} key={letter} feedback="visible"/>
+        )
+      )}
     </div>
   );
 }
