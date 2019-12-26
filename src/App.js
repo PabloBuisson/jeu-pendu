@@ -9,8 +9,8 @@ const word = "ELEPHANT"
 
 class App extends Component {
 
-  handleLetterClick(letter) {
-    (word.split("").indexOf(letter) !== -1) && console.log(letter, 'gagné');
+  handleLetterClick = (letter) => {
+    (word.split("").indexOf(letter) !== -1) && console.log(letter, this);
   }
 
   render() {
