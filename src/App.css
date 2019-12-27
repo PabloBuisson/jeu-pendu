@@ -1,4 +1,4 @@
-.game {
+#game {
   display: flex;
   justify-content: center;
   font-size: 3em;
@@ -6,4 +6,8 @@
   width: 500px;
   margin: auto;
   user-select: none;
+}
+
+#guesses {
+  color: red;
 }
