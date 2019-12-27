@@ -1,13 +1,29 @@
 #game {
-  display: flex;
-  justify-content: center;
-  font-size: 3em;
-  flex-wrap: wrap;
   width: 500px;
   margin: auto;
   user-select: none;
 }
 
+#game hr {
+  border: 1px solid grey;
+}
+
+#buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#win {
+  color: rgb(206, 69, 69);
+  font-size: 2em;
+  margin-top: 25px;
+  text-align: center;
+}
+
 #guesses {
-  color: red;
+  color: grey;
+  font-size: 2em;
+  margin-top: 20px;
+  text-align: center;
 }
