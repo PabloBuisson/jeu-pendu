@@ -5,15 +5,33 @@ import Word from './Word.js'
 
 const ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
 "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-const WORD = "ELEPHANT"
 const WORDS = ["PIERRE", "FEUILLE", "PAPIER", "CISEAU"]
 
 class App extends Component {
-  state = {
-    word: this.chooseWord(WORDS),
-    filter: this.revealWord(WORD, []),
-    usedLetters: [],
-    guesses: 0,
+  constructor(props) {
+    super(props)
+    this.state = {
+      word: this.chooseWord(WORDS),
+      filter: '',
+      usedLetters: [],
+      guesses: 0,
+     }
+    this.chooseWord(WORDS)
+  }
+
+  // modification de l'état local juste avant le premier render
+  // ajout du masque (mot filtré)
+  componentWillMount() {
+    const { word, filter } = this.state
+    this.setState({ filter: this.revealWord(word, [])})
+  }
+
+  chooseWord(WORDS) {
+    return WORDS[Math.floor(Math.random() * WORDS.length)]
+  }
+
+  revealWord(filter, usedLetters) { 
+    return filter.replace(/\w/g, (letter) => (usedLetters.includes(letter) ? letter : '_')) 
   }
 
   handleLetterClick = letter => {
@@ -29,17 +47,21 @@ class App extends Component {
     this.setState({filter: newWord})
   }
 
-  chooseWord(WORDS) {
-    return WORDS[Math.floor(Math.random() * WORDS.length)]
-  }
-
-  revealWord(filter, usedLetters) { 
-    return filter.replace(/\w/g, (letter) => (usedLetters.includes(letter) ? letter : '_')) 
-  }
-
   isWon() {
     const { filter, word } = this.state
     return (filter === word)
+  }
+
+  // remise à 0
+  // Arrow fx for binding
+  tryAgain = () => {
+    this.setState({
+      word: this.chooseWord(WORDS),
+      filter: '',
+      usedLetters: [],
+      guesses: 0,
+    })
+    this.componentWillMount()
   }
 
   render() {
@@ -47,7 +69,9 @@ class App extends Component {
     const won = this.isWon();
     return (
       <div id="game">
-        <p id="guesses">Tentatives : { guesses }</p>
+        <p id="guesses">{won ? `GAGNÉ en ${guesses} tentatives !` :
+        `Tentatives : ${guesses}`}
+        </p>
         <hr />
         <div id="word">
           {filter.split("").map((letter, index) => (
@@ -66,7 +90,14 @@ class App extends Component {
           )
           )}
         </div>
-        {won && <p id="win">GAGNÉ EN {guesses} TENTATIVES !</p>}
+        <div className="text-center">
+          {won && <button 
+                    className="btn btn-primary my-5 mx-auto" 
+                    id="try-again" 
+                    onClick={this.tryAgain}>
+                    Relancer la partie !
+                  </button>}
+        </div>
       </div>
     );
   }
