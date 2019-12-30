@@ -1,6 +1,6 @@
 #game {
-  width: 500px;
   margin: auto;
+  max-width: 800px;
   user-select: none;
 }
 

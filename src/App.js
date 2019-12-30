@@ -9,47 +9,42 @@ const WORDS = ["PIERRE", "FEUILLE", "PAPIER", "CISEAU"]
 
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       word: this.chooseWord(WORDS),
-      filter: '',
       usedLetters: [],
       guesses: 0,
      }
-    this.chooseWord(WORDS)
-  }
-
-  // modification de l'état local juste avant le premier render
-  // ajout du masque (mot filtré)
-  componentWillMount() {
-    const { word, filter } = this.state
-    this.setState({ filter: this.revealWord(word, [])})
   }
 
   chooseWord(WORDS) {
-    return WORDS[Math.floor(Math.random() * WORDS.length)]
+    return WORDS[Math.floor(Math.random() * WORDS.length)];
   }
 
-  revealWord(filter, usedLetters) { 
-    return filter.replace(/\w/g, (letter) => (usedLetters.includes(letter) ? letter : '_')) 
+  revealWord(word, usedLetters) { 
+    return word.replace(/\w/g, (letter) => (usedLetters.includes(letter) ? letter : '_')); 
   }
 
+  // Arrow fx for binding
   handleLetterClick = letter => {
     // on récupère les propriétés de l'état local
-    const { word, guesses, usedLetters } = this.state
+    const { guesses, usedLetters } = this.state;
     // on prépare les modifs de l'état local : guesses, letters utilisées
-    const newGuesses = guesses + 1
-    const newUsedLetters = [...usedLetters, ...letter]
+    const newGuesses = guesses + 1;
+    const newUsedLetters = [...usedLetters, ...letter];
     // on modifie l'état local
-    this.setState({guesses: newGuesses, usedLetters: newUsedLetters})
-    // on verifie si la lettre fait partie du mot + change l'état local
-    const newWord = this.revealWord(word, newUsedLetters)
-    this.setState({filter: newWord})
+    this.setState({guesses: newGuesses, usedLetters: newUsedLetters});
   }
 
-  isWon() {
-    const { filter, word } = this.state
-    return (filter === word)
+  // Arrow fx for binding
+  getLetterFeedback = letter => {
+    const { usedLetters } = this.state;
+
+    if (usedLetters.includes(letter)) {
+      return 'used';
+    }
+
+    return 'clean';
   }
 
   // remise à 0
@@ -57,18 +52,17 @@ class App extends Component {
   tryAgain = () => {
     this.setState({
       word: this.chooseWord(WORDS),
-      filter: '',
       usedLetters: [],
       guesses: 0,
     })
-    this.componentWillMount()
   }
 
   render() {
-    const { filter, guesses } = this.state
-    const won = this.isWon();
+    const { word, usedLetters, guesses } = this.state;
+    const filter = this.revealWord(word, usedLetters);
+    const won = (filter === word);
     return (
-      <div id="game">
+      <div className="container" id="game">
         <p id="guesses">{won ? `GAGNÉ en ${guesses} tentatives !` :
         `Tentatives : ${guesses}`}
         </p>
@@ -81,10 +75,9 @@ class App extends Component {
         <div id="buttons">
           {ALPHABET.map((letter) => (
             <Key 
-              entries={ALPHABET} 
               letter={letter} 
               key={letter} 
-              feedback="visible" 
+              feedback={this.getLetterFeedback(letter)} 
               onClick={this.handleLetterClick} 
             />
           )

@@ -1,3 +1,7 @@
 .key {
     margin: 10px 10px 10px 10px;
 }
+
+.key .used {
+    color: red;
+}
